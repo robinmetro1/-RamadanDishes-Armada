@@ -7,6 +7,8 @@
 </head>
 <body>
     <h1>Cooking Time</h1>
+    <a href="/">Go Back</a>
+
     <% if (cookingTime && cookingTime.length > 0) { %>
         <ul>
             <% cookingTime.forEach(item => { %>
@@ -25,5 +27,7 @@
     <% } else { %>
         <p>No cooking time found</p>
     <% } %>
+    <a href="/">Go Back</a>
+
 </body>
 </html>

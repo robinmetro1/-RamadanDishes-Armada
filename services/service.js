@@ -5,7 +5,6 @@ const axios = require('axios');
 
 let dishesData ;
 let prayerData;
-let ingredientToDishesMap = new Map();
 
 const ramadhanPrayerAPI = "https://api.aladhan.com/v1/hijriCalendar/1445/9?latitude=21.4225&longitude=39.8262&method=1";
 const dishesAPI ="https://file.notion.so/f/f/29f0d547-e67d-414a-aece-c8e4f886f341/7c1daa75-3bea-4684-bf17-be07a0800452/dishes.json?id=bcc24a10-cc7d-4db2-8c82-f61773c06fc7&table=block&spaceId=29f0d547-e67d-414a-aece-c8e4f886f341&expirationTimestamp=1707242400000&signature=0X0Y0dr30wp6ZrOZvfPMsu9rt_iMkEUsx06Q_ChZdcs&downloadName=dishes.json";
@@ -35,55 +34,19 @@ async function fetchPrayersData() {
 
 
 
-async function getPrayerTimesofRequestedDay(requestedDay) {
 
-    try {
-        prayerData = await fetchPrayersData();
-    } catch (error) {
-        console.error('Error fetching data in getPrayerTimesofRequestedDay:', error);
+
+
+function getCooktimeMessage(cooktime) {
+    if (cooktime >= 0) {
+        return `${cooktime} minutes before Asr`;
+    } else {
+        return `${Math.abs(cooktime)} minutes after Asr`;
     }
-    let maghribMinutes, asrMinutes;
-
-            // Iterate through the prayer data
-            prayerData.forEach(item => {
-                const hijriDay = item.date.hijri.day;
-
-                // Check if the day matches the requested day
-                if (hijriDay === requestedDay) {
-                    // Extract Maghrib and Asr timings
-                    maghribMinutes = convertTimeToMinutes(item.timings.Maghrib);
-                    asrMinutes = convertTimeToMinutes(item.timings.Asr);
-                    
-                }
-            });
-
-            //console.log("maghribMinutes:", maghribMinutes, "asrMinutes:", asrMinutes);
-            return {  maghribMinutes , asrMinutes };
-       
-      
 }
 
 
-// Define cooking time calculation function
-function calculateCookingTime(foundDishes, maghribMinutes, asrMinutes) {
-    const response = [];
-    foundDishes.forEach(dish=> {
-        let {ingredients,dishDuration}  = getIngrendientsAndDurationforDish(dish);
 
-        let cooktime= calculateStartTimeRelativeToAsr(dishDuration,maghribMinutes,asrMinutes);
-        const cooktimeMessage = cooktime >= 0 ? `${cooktime} minutes before Asr` : `${Math.abs(cooktime)} minutes after Asr`;
-        //console.log("cooktime:"+cooktime);
-        response.push({
-                    name : dish,
-                    ingredients : ingredients,
-                    cooktime : cooktimeMessage
-            
-        })        
-});
-return response;
-    
-
-} 
 
 function calculateStartTimeRelativeToAsr(duration,maghribMinutes,asrMinutes){
     const timeRelativeToAsr = asrMinutes -  (maghribMinutes - 15 -duration) ;
@@ -135,21 +98,95 @@ async function createIngredientToDishesMap(){
             })
         })
         return map;     
-   
-   
 
 }
-function getDishesData(){ return dishesData;}
+async function getPrayerTimesofRequestedDay(requestedDay) {
 
-function getPrayersData(){return prayerData;}
+    try {
+        prayerData = await fetchPrayersData();
+    } catch (error) {
+        console.error('Error fetching data in getPrayerTimesofRequestedDay:', error);
+    }
+    let maghribMinutes, asrMinutes;
+
+            // Iterate through the prayer data
+            prayerData.forEach(item => {
+                const hijriDay = item.date.hijri.day;
+
+                // Check if the day matches the requested day
+                if (hijriDay === requestedDay) {
+                    // Extract Maghrib and Asr timings
+                    maghribMinutes = convertTimeToMinutes(item.timings.Maghrib);
+                    asrMinutes = convertTimeToMinutes(item.timings.Asr);
+                    
+                }
+            });
+            return {  maghribMinutes:maghribMinutes , asrMinutes:asrMinutes };
+}
+
+// Define cooking time calculation function
+function calculateCookingTime(foundDishes, maghribMinutes, asrMinutes) {
+    const response = [];
+    foundDishes.forEach(dish=> {
+        let {ingredients,dishDuration}  = getIngrendientsAndDurationforDish(dish);
+
+        let cooktime= calculateStartTimeRelativeToAsr(dishDuration,maghribMinutes,asrMinutes);
+        const cooktimeMessage = getCooktimeMessage(cooktime);
+        response.push({
+                    name : dish,
+                    ingredients : ingredients,
+                    cooktime : cooktimeMessage
+            
+        })        
+});
+return response;
+    
+
+} 
+async function getSuggestedDish(difficulty,day){
+    console.log(day);
+   
+    try {
+        dishesData = await fetchDishesData();
+    } catch (error) {
+        console.error('Error fetching data in createIngredientToDishesMap:', error);
+    }
+    
+    const { maghribMinutes, asrMinutes } = await getPrayerTimesofRequestedDay(day);
+
+        let availableDishes = [];
+    switch (difficulty) {
+        case 'easy':
+            availableDishes = dishesData.filter(dish => dish.duration <= 30);
+            break;
+        case 'medium':
+            availableDishes = dishesData.filter(dish => dish.duration > 30 && dish.duration <= 120);
+            break;
+        case 'hard':
+            availableDishes = dishesData.filter(dish => dish.duration > 120);
+            break;
+        default:
+            return 'Invalid difficulty level';
+    }
+
+    // Select a random dish from available dishes
+    const randomIndex = Math.floor(Math.random() * availableDishes.length);
+    const suggestedDish = availableDishes[randomIndex];
+    const cooktime = calculateStartTimeRelativeToAsr(suggestedDish.duration,maghribMinutes,asrMinutes);
+    const cooktimeMessage = getCooktimeMessage(cooktime);
+    console.log(cooktimeMessage);
+    return {
+        name: suggestedDish.name,
+        ingredients: suggestedDish.ingredients,
+        cooktime: cooktimeMessage
+    };
+
+
+}
 
 module.exports={
     getPrayerTimesofRequestedDay :getPrayerTimesofRequestedDay,
     calculateCookingTime :calculateCookingTime,
-    getDishesData:getDishesData,
-    getPrayersData:getPrayersData,
-    createIngredientToDishesMap:createIngredientToDishesMap
-        
-
-
+    createIngredientToDishesMap:createIngredientToDishesMap,
+    getSuggestedDish:getSuggestedDish
 }

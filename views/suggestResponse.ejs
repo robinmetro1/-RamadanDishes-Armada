@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What to cook today ?</title>
+</head>
+<body>
+    <a href="/">Go Back</a>
+    <h1>Suggested Dish</h1>
+    <h2>Difficulty: <%= difficulty %></h2>
+    <% if (suggestedDish) { %>
+   
+                    <h2><%= suggestedDish.name %></h2>
+                    <h3> Ingredients:</h3>
+                    <ul>
+                        <% suggestedDish.ingredients.forEach(ingredient => { %>
+                            <li><%= ingredient %></li>
+                        <% }); %>
+                    </ul>
+                    <p>CookTime: <%= suggestedDish.cooktime %></p>
+            
+    <% } else { %>
+        <p>No dish found</p>
+    <% } %>
+    
+    
+</body>
+</html>

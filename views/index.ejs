@@ -1,12 +1,41 @@
+<!-- cooktime.ejs -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Time Calculator</title>
 </head>
 <body>
-  RAMADHAN KARIM
+
+
+    <div class="container">
+        <h1>What to cook today ?</h1>
+        <form action="/suggest" method="GET">
+            <div class="form-group">
+                <label for="difficulty">Select Difficulty:</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+                <br>
+                <label for="day">Day:</label>
+                <input type="text" id="day" name="day" >
+                <br>
+            </div>
+            <button type="submit">What</button>
+        </form>
+        <h1>Cooking Time Calculator</h1>
+        <form action="/cooktime" method="GET">
+            <label for="ingredient">Ingredient:</label>
+            <input type="text" id="ingredient" name="ingredient" required><br><br>
+    
+            <label for="day">Day:</label>
+            <input type="text" id="day" name="day" placeholder="Enter the day" required ><br><br>
+    
+            <button type="submit">Calculate Cook Time</button>
+        </form>
 </body>
 </html>

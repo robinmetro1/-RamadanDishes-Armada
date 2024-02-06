@@ -19,5 +19,19 @@
         <button type="submit">Calculate Cook Time</button>
     </form>
 
+    <div class="container">
+        <h1>What to cook today ?</h1>
+        <form action="/suggest" method="GET">
+            <div class="form-group">
+                <label for="difficulty">Select Difficulty:</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <button type="submit">What</button>
+        </form>
+
 </body>
 </html>
