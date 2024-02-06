@@ -10,6 +10,12 @@ const service = require('../services/service.js');
 
 let noDishesFound=false;
 
+
+router.get('/',  (req, res, next) => {
+	return res.render('index.ejs');
+});
+
+
 router.get('/suggest', async (req, res) => {
     const { difficulty,day } = req.query;
     const suggestedDish = await service.getSuggestedDish(difficulty,day);
@@ -17,9 +23,7 @@ router.get('/suggest', async (req, res) => {
 
 });
 
- router.get('/',  (req, res, next) => {
-	return res.render('index.ejs');
-});
+
 
 router.get('/cooktime', async(req, res) => {
     const { ingredient, day } = req.query;
@@ -44,14 +48,9 @@ router.get('/cooktime', async(req, res) => {
 
     }
     else {
-        // If no dishes found, render the cooktime template with noDishesFound set to true
         res.render('cooktimeResponse', { noDishesFound:true});
     }
 
 });
-
-
-
-
 
 module.exports=router
