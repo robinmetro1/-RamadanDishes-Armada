@@ -144,7 +144,6 @@ return response;
 
 } 
 async function getSuggestedDish(difficulty,day){
-    console.log(day);
    
     try {
         dishesData = await fetchDishesData();
@@ -174,7 +173,6 @@ async function getSuggestedDish(difficulty,day){
     const suggestedDish = availableDishes[randomIndex];
     const cooktime = calculateStartTimeRelativeToAsr(suggestedDish.duration,maghribMinutes,asrMinutes);
     const cooktimeMessage = getCooktimeMessage(cooktime);
-    console.log(cooktimeMessage);
     return {
         name: suggestedDish.name,
         ingredients: suggestedDish.ingredients,

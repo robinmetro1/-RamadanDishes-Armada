@@ -9,7 +9,10 @@
     <h1>Cooking Time</h1>
     <a href="/">Go Back</a>
 
-    <% if (cookingTime && cookingTime.length > 0) { %>
+    <% if (noDishesFound) { %>
+        <h1>No dishes found with the provided ingredient</h1>
+
+    <% } else { %>
         <ul>
             <% cookingTime.forEach(item => { %>
                 <li>
@@ -24,10 +27,13 @@
                 </li>
             <% }); %>
         </ul>
-    <% } else { %>
-        <p>No cooking time found</p>
-    <% } %>
-    <a href="/">Go Back</a>
+        <a href="/">Go Back</a>
+
+       
+       
+       
+       
+        <% } %>
 
 </body>
 </html>

@@ -22,20 +22,23 @@
                 </select>
                 <br>
                 <label for="day">Day:</label>
-                <input type="text" id="day" name="day" >
+                <input type="number" id="day" name="day"  required min="1" max="31"><br>
                 <br>
             </div>
             <button type="submit">What</button>
         </form>
+
         <h1>Cooking Time Calculator</h1>
         <form action="/cooktime" method="GET">
             <label for="ingredient">Ingredient:</label>
             <input type="text" id="ingredient" name="ingredient" required><br><br>
     
             <label for="day">Day:</label>
-            <input type="text" id="day" name="day" placeholder="Enter the day" required ><br><br>
+            <input type="number" id="day" name="day"  required min="1" max="31"><br>
     
             <button type="submit">Calculate Cook Time</button>
+       
         </form>
+
 </body>
 </html>

@@ -8,6 +8,7 @@ let ingredientToDishesMap = new Map();
 
 const service = require('../services/service.js');
 
+let noDishesFound=false;
 
 router.get('/suggest', async (req, res) => {
     const { difficulty,day } = req.query;
@@ -31,19 +32,20 @@ router.get('/cooktime', async(req, res) => {
     let  foundDishes = ingredientToDishesMap.get(ingredient.toLowerCase());
     // Validate if the provided ingredient exists
     if (foundDishes) {
+        let maghribMinutes ,asrMinutes;
 
       ({ maghribMinutes, asrMinutes } = await service.getPrayerTimesofRequestedDay(day));
 
         cookingTime = service.calculateCookingTime(foundDishes, maghribMinutes, asrMinutes);
-        //console.log(JSON.stringify(calculateCookingTime(foundDishes,prayerTimeMap,day)));
 
-        res.render('cooktimeResponse', { cookingTime });
+        
+        res.render('cooktimeResponse', { cookingTime ,noDishesFound});
 
 
     }
     else {
         // If no dishes found, render the cooktime template with noDishesFound set to true
-        res.render('index', { noDishesFound: true });
+        res.render('cooktimeResponse', { noDishesFound:true});
     }
 
 });
