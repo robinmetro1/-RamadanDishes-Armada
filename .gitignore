@@ -3,22 +3,3 @@ node_modules/
 
 # Ignore .env files that may contain sensitive information
 .env
-
-# Ignore any logs or temporary files
-logs/
-*.log
-npm-debug.log*
-
-# Ignore any build output or compiled code
-/build/
-/dist/
-/out/
-
-# Ignore any local configuration files
-config.json
-
-# Ignore any OS or editor-specific files
-.DS_Store
-.vscode/
-*.swp
-Thumbs.db
