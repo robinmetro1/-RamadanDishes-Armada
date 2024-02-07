@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooking Time  Calculator </title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cooking Time Calculator</title>
 </head>
+
 <body>
     <h1>Cooking Time</h1>
     <a href="/">Go Back</a>
@@ -12,28 +14,29 @@
     <% if (noDishesFound) { %>
         <h1>No dishes found with the provided ingredient</h1>
 
-    <% } else { %>
-        <ul>
-            <% cookingTime.forEach(item => { %>
-                <li>
-                    <h2><%= item.name %></h2>
-                    <h3> Ingredients:</h3>
-                    <ul>
-                        <% item.ingredients.forEach(ingredient => { %>
-                            <li><%= ingredient %></li>
-                        <% }); %>
-                    </ul>
-                    <p>Cooking Time: <%= item.cooktime %></p>
-                </li>
-            <% }); %>
-        </ul>
-        <a href="/">Go Back</a>
+        <% } else { %>
+            <ul>
+                <% cookingTime.forEach(item=> { %>
+                    <li>
+                        <h2>
+                            <%= item.name %>
+                        </h2>
+                        <h3>Ingredients:</h3>
+                        <ul>
+                            <% item.ingredients.forEach(ingredient=> { %>
+                                <li>
+                                    <%= ingredient %>
+                                </li>
+                                <% }); %>
+                        </ul>
+                        <p>Cooking Time: <%= item.cooktime %>
+                        </p>
+                    </li>
+                    <% }); %>
+            </ul>
+            <a href="/">Go Back</a>
 
-       
-       
-       
-       
-        <% } %>
-
+            <% } %>
 </body>
+
 </html>
