@@ -13,9 +13,7 @@ The idea is that the user provides an ingredient and the Ramadhan day then the  
 
 To run this project locally, follow these steps:
 
-    ```bash
     npm install
-    ```
 
 ## Usage
 
